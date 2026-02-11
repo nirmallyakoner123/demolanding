@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #F8F8F8;
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  /* Container Configuration */
+  --container-center: true;
+  --container-padding: 1rem;
+
+  /* Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1280px;
+
+  /* Primary Colors */
+  --color-primary: #2563EB;
+  --color-primary-light: #38F;
+  --color-primary-gradient-from: #38F;
+  --color-primary-gradient-to: #00A0E2;
+
+  /* Bootstrap Theme Colors */
+  --color-danger: #dc3545;
+  --color-secondary: #6c757d;
+  --color-success: #28a745;
+  --color-info: #17a2b8;
+  --color-warning: #ffc107;
+  --color-light: #f8f9fa;
+  --color-dark: #343a40;
+
+  /* Text Colors */
+  --color-text: #161719;
+  --color-text-light: #6c757d;
+
+  /* Background Colors */
+  --color-background: #F8F8F8;
+  --color-background-white: #FFFFFF;
+
+  /* Font Families */
+  --font-nunito: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-lexend: Lexend, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Roboto Mono", "Courier New", Courier, monospace;
+
+  /* Typography */
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+  --letter-spacing-btn: -0.48px;
+
+  /* Border Radius */
+  --radius-btn: 8.256px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 
 body {
-  background: var(--background);
+  /* background: var(--background); */
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-nunito), sans-serif;
 }
