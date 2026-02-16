@@ -48,7 +48,7 @@ export default function SocialShare({ title, url }: SocialShareProps) {
         {/* Twitter */}
         <button
           onClick={() => handleShare('twitter')}
-          className="flex items-center justify-center w-9 h-9 rounded-full bg-[#1DA1F2]/10 text-[#1DA1F2] hover:bg-[#1DA1F2] hover:text-white transition-all duration-300"
+          className="flex items-center justify-center w-9 h-9 rounded-full bg-text/10 text-text hover:bg-text hover:text-white transition-all duration-300"
           aria-label="Share on Twitter"
         >
           <FaXTwitter className="text-base" />

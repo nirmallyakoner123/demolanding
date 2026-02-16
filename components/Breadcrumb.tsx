@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { IoChevronForward } from 'react-icons/io5';
+import Link from "next/link";
+import { IoChevronForward } from "react-icons/io5";
 
 interface BreadcrumbItem {
   label: string;
@@ -22,8 +22,8 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
           <li key={index} className="flex items-center gap-2">
             {index < items.length - 1 ? (
               <>
-                <Link 
-                  href={item.path} 
+                <Link
+                  href={item.path}
                   className="text-text-light hover:text-primary transition-colors"
                 >
                   {item.label}
@@ -31,7 +31,9 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                 <IoChevronForward className="text-text-light text-xs" />
               </>
             ) : (
-              <span className="text-text font-medium">{item.label}</span>
+              <span className="text-text font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px] md:max-w-none md:whitespace-normal md:overflow-visible">
+                {item.label}
+              </span>
             )}
           </li>
         ))}

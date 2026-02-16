@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { HiArrowSmallRight } from 'react-icons/hi2';
+import { useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { HiArrowSmallRight } from "react-icons/hi2";
 
 export default function StartHiring() {
   useEffect(() => {
@@ -19,41 +19,33 @@ export default function StartHiring() {
   }, []);
 
   return (
-    <div className="relative z-0 mb-[100px] lg:mb-[50px]">
-      {/* Bottom Gradient Border */}
-      <div 
-        className="absolute bottom-0 left-0 w-full h-[2px] opacity-20 z-[-1]"
-        style={{
-          background: 'linear-gradient(90deg, rgba(46, 46, 46, 0) 0%, #2E2E2E 50%, rgba(46, 46, 46, 0) 100%)'
-        }}
-      />
+    <div className="relative z-0 pb-6">
+      <div className="absolute bottom-0 left-0 w-full h-[2px] z-[-1] opacity-20 bg-linear-to-r from-[#2e2e2e]/0 via-[#2e2e2e] to-[#2e2e2e]/0" />
 
       <div className="container mx-auto px-4">
-        <div className="relative z-0 p-[30px]">
-          <div className="relative border border-[#e9e9e9] rounded-[12px] min-h-[300px] text-white overflow-hidden flex items-center justify-center">
-            {/* Background Image */}
-            <Image
-              src="/start_hiring_banner.png"
-              alt="Start Hiring Banner"
-              fill
-              className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
-            />
-            
-            <div className="w-full justify-center">
-              <div className="col-span-12 lg:col-span-10 xl:col-span-6 mx-auto">
-                 <div className="text-center p-8 lg:p-12">
-                  <h2 className="text-[32px] font-bold mb-4">Start Hiring Smarter Today!</h2>
-                  <p className="text-[18px] opacity-90 mb-6">
+        <div className="relative z-0 p-8">
+          {/* Box Vertical Borders */}
+          <div className="absolute top-0 left-0 w-[2px] h-full opacity-20 bg-linear-to-b from-[#2e2e2e]/0 via-[#2e2e2e] to-[#2e2e2e]/0" />
+          <div className="absolute top-0 right-0 w-[2px] h-full opacity-20 bg-linear-to-b from-[#2e2e2e]/0 via-[#2e2e2e] to-[#2e2e2e]/0" />
+
+          <div className="relative border border-zinc-200 rounded-xl min-h-[300px] text-white overflow-hidden flex items-center justify-center bg-[url('/start_hiring_banner.png')] bg-cover bg-center bg-no-repeat">
+            <div className="w-full flex justify-center">
+              <div className="max-w-3xl mx-auto">
+                <div className="text-center p-4 lg:p-5">
+                  <h2 className="text-4xl font-bold mb-2">
+                    Start Hiring Smarter Today!
+                  </h2>
+                  <p className="text-lg opacity-90 mb-4">
                     Say goodbye to manual screening and slow hiring.
                   </p>
-                  
-                  <Link 
+
+                  <Link
                     href="/pricing"
-                    className="d-inline-flex inline-flex items-center justify-center gap-2 bg-[#3388FF] hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+                    className="d-inline-flex inline-flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-lg transition-colors duration-200"
                   >
                     Get Started <HiArrowSmallRight className="w-5 h-5" />
                   </Link>
-                 </div>
+                </div>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F8F8F8;
+  --background: #f8f8f8;
   --foreground: #171717;
 }
 
@@ -11,17 +11,20 @@
   --container-padding: 1rem;
 
   /* Breakpoints */
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1280px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 720px;
+  --breakpoint-lg: 850px;
+  --breakpoint-xl: 960px;
+  --breakpoint-2xl: 1140px;
+  --breakpoint-3xl: 1320px;
 
   /* Primary Colors */
-  --color-primary: #2563EB;
-  --color-primary-light: #38F;
-  --color-primary-gradient-from: #38F;
-  --color-primary-gradient-to: #00A0E2;
+  --color-primary: #3388FF;
+  --color-primary-light: #38f;
+  --color-primary-gradient-from: #38f;
+  --color-primary-gradient-to: #00a0e2;
+  --background-image-primary-gradient:
+    linear-gradient(0deg, #38f, #38f), linear-gradient(180deg, #38f, #00a0e2);
 
   /* Bootstrap Theme Colors */
   --color-danger: #dc3545;
@@ -31,19 +34,29 @@
   --color-warning: #ffc107;
   --color-light: #f8f9fa;
   --color-dark: #343a40;
+  --color-badge: #1e1e1ecc;
+  --color-border-light: rgba(30, 30, 30, 0.1);
 
   /* Text Colors */
   --color-text: #161719;
   --color-text-light: #6c757d;
+  --color-custom: #1e1e1e;
+  --color-custom-light: #757272;
 
   /* Background Colors */
-  --color-background: #F8F8F8;
-  --color-background-white: #FFFFFF;
+  --color-background: #f8f8f8;
+  --color-background-white: #ffffff;
 
   /* Font Families */
-  --font-nunito: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-sans: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-lexend: Lexend, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-nunito:
+    "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-sans:
+    "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-lexend:
+    Lexend, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   --font-mono: "Roboto Mono", "Courier New", Courier, monospace;
 
   /* Typography */
@@ -51,14 +64,29 @@
   --line-height-base: 1.6;
   --letter-spacing-btn: -0.48px;
 
+  --text-font-base: 17px;
+  --text-small: 15px;
+
   /* Border Radius */
   --radius-btn: 8.256px;
+
+  /* Animations */
+  --animate-pulse-border: pulse-border 1.5s ease-out infinite;
+
+  @keyframes pulse-border {
+    0% {
+      scale: 1;
+      opacity: 0.8;
+    }
+    100% {
+      scale: 1.8;
+      opacity: 0;
+    }
+  }
 }
 
-
-
 body {
-  /* background: var(--background); */
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-nunito), sans-serif;
 }

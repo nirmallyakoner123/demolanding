@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import Image from "next/image";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function Brands() {
   const settings = {
@@ -21,45 +21,45 @@ export default function Brands() {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2
-        }
+          initialSlide: 2,
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   const brands = [
     {
-      name: 'Klizo',
-      image: '/brands/Klizo Logo.png',
+      name: "Klizo",
+      image: "/brands/Klizo Logo.png",
       width: 97,
-      height: 30
+      height: 30,
     },
     {
-      name: 'Ehave',
-      image: '/brands/Ehave Logo.png',
+      name: "Ehave",
+      image: "/brands/Ehave Logo.png",
       width: 92,
-      height: 30
+      height: 30,
     },
     {
-      name: 'AI Headhunter',
-      image: '/brands/Headhunter.png',
+      name: "AI Headhunter",
+      image: "/brands/Headhunter.png",
       width: 110,
-      height: 40
+      height: 40,
     },
   ];
 
@@ -67,21 +67,15 @@ export default function Brands() {
     <div className="brands relative" id="who_we_are">
       <div className="container mx-auto px-4">
         {/* Brand Box with Gradient Borders */}
-        <div className="relative py-[50px] lg:py-[100px]">
+        <div className="relative py-20">
           {/* Left Gradient Border */}
-          <div 
-            className="absolute top-0 left-0 w-[2px] h-full z-[-1] opacity-20"
-            style={{
-              background: 'linear-gradient(to top, rgba(46, 46, 46, 0.45) 0%, rgba(46, 46, 46, 0.12) 50%, rgba(46, 46, 46, 0) 100%)'
-            }}
+          <div
+            className="absolute top-0 left-0 w-[2px] h-full z-[-1] opacity-20 bg-linear-to-t from-[#2e2e2e]/45 via-[#2e2e2e]/12 to-transparent"
           />
-          
+
           {/* Right Gradient Border */}
-          <div 
-            className="absolute top-0 right-0 w-[2px] h-full z-[-1] opacity-20"
-            style={{
-              background: 'linear-gradient(to top, rgba(46, 46, 46, 0.45) 0%, rgba(46, 46, 46, 0.12) 50%, rgba(46, 46, 46, 0) 100%)'
-            }}
+          <div
+            className="absolute top-0 right-0 w-[2px] h-full z-[-1] opacity-20 bg-linear-to-t from-[#2e2e2e]/45 via-[#2e2e2e]/12 to-transparent"
           />
 
           <div className="max-w-[1100px] mx-auto">
@@ -95,7 +89,11 @@ export default function Brands() {
                         alt={brand.name}
                         width={brand.width}
                         height={brand.height}
-                        style={{ objectFit: 'contain', width: 'auto', height: '100%' }}
+                        style={{
+                          objectFit: "contain",
+                          width: "auto",
+                          height: "100%",
+                        }}
                       />
                     </div>
                   </div>

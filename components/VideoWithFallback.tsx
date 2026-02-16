@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React, { useState } from "react";
+import Image from "next/image";
 
 interface VideoWithFallbackProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
   src: string;
@@ -9,7 +9,12 @@ interface VideoWithFallbackProps extends React.VideoHTMLAttributes<HTMLVideoElem
   className?: string;
 }
 
-const VideoWithFallback: React.FC<VideoWithFallbackProps> = ({ src, fallbackSrc, className, ...props }) => {
+const VideoWithFallback: React.FC<VideoWithFallbackProps> = ({
+  src,
+  fallbackSrc,
+  className,
+  ...props
+}) => {
   const [showImage, setShowImage] = useState(false);
 
   const handleVideoError = () => {
@@ -18,7 +23,10 @@ const VideoWithFallback: React.FC<VideoWithFallbackProps> = ({ src, fallbackSrc,
 
   if (showImage || !src) {
     return (
-      <div className={`relative w-full h-auto ${className}`} style={{ borderRadius: '8px', overflow: 'hidden' }}>
+      <div
+        className={`relative w-full h-auto ${className}`}
+        style={{ borderRadius: "8px", overflow: "hidden" }}
+      >
         <Image
           src={fallbackSrc}
           alt="Video fallback"
@@ -26,8 +34,8 @@ const VideoWithFallback: React.FC<VideoWithFallbackProps> = ({ src, fallbackSrc,
           height={1080}
           className="w-full h-auto object-cover"
           style={{
-            width: '100%',
-            height: 'auto',
+            width: "100%",
+            height: "auto",
           }}
         />
       </div>

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useState } from 'react';
+import Image from "next/image";
+import { useState } from "react";
 
 interface LazyImageProps {
   src: string;
@@ -24,7 +24,7 @@ export default function LazyImage({
   alt,
   width,
   height,
-  className = '',
+  className = "",
   priority = false,
   fill = false,
   sizes,
@@ -44,7 +44,7 @@ export default function LazyImage({
         priority={priority}
         className={`
           duration-700 ease-in-out
-          ${isLoading ? 'scale-110 blur-sm grayscale' : 'scale-100 blur-0 grayscale-0'}
+          ${isLoading ? "scale-110 blur-sm grayscale" : "scale-100 blur-0 grayscale-0"}
         `}
         onLoad={() => setIsLoading(false)}
       />

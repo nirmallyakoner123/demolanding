@@ -26,7 +26,7 @@ export default async function ArticlesPage() {
   const articles = await fetchArticles();
 
   return (
-    <main className="relative pt-32 pb-20 sm:pt-28 sm:pb-16 min-h-screen z-0">
+    <main className="relative min-h-screen z-0 py-40">
       {/* Background Gradient */}
       <div 
         className="absolute top-0 left-0 w-full h-full z-[-1]"
@@ -54,13 +54,13 @@ export default async function ArticlesPage() {
         />
       </div>
 
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4">
         {/* Page Header */}
         <div className="text-center mb-16">
-          <h1 className="font-lexend text-5xl sm:text-4xl font-bold text-text mb-6">
+          <h1 className="text-custom text-2xl lg:text-4xl xl:text-5xl font-lexend font-normal leading-normal mb-1">
             Articles & Insights
           </h1>
-          <p className="font-nunito text-lg text-text-light max-w-3xl mx-auto leading-relaxed">
+          <p className="text-custom text-base lg:text-lg font-nunito font-medium leading-normal opacity-70">
             Discover expert insights on AI-powered recruitment, hiring automation, 
             and best practices to transform your hiring process.
           </p>
