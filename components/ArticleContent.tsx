@@ -1,4 +1,5 @@
 import Image from "next/image";
+import DOMPurify from "isomorphic-dompurify";
 
 interface ContentBlock {
   type: string;
@@ -15,6 +16,30 @@ interface ArticleContentProps {
   content: any[];
 }
 
+/**
+ * Sanitize HTML content to prevent XSS attacks
+ * Uses DOMPurify to clean potentially dangerous HTML
+ */
+const sanitizeHTML = (html: string): string => {
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: [
+      'p', 'br', 'strong', 'em', 'b', 'i', 'a', 
+      'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'span'
+    ],
+    ALLOWED_ATTR: ['href', 'target', 'rel'],
+  });
+
+  // Force safe rel for target=_blank to prevent security issues
+  return clean.replace(
+    /<a([^>]*?)target=["']_blank["']([^>]*?)>/gi,
+    (match, p1, p2) => {
+      // If rel already exists, keep it; else inject safe rel
+      if (/rel=["'].*?["']/i.test(match)) return match;
+      return `<a${p1}target="_blank" rel="noopener noreferrer nofollow"${p2}>`;
+    }
+  );
+};
+
 export default function ArticleContent({ content }: ArticleContentProps) {
   if (!content || !Array.isArray(content)) {
     return null;
@@ -29,19 +54,19 @@ export default function ArticleContent({ content }: ArticleContentProps) {
           <p
             key={index}
             className="font-nunito text-font-base leading-[1.8] text-text mb-6"
-            dangerouslySetInnerHTML={{ __html: block.content || "" }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHTML(block.content || "") }}
           />
         );
 
-      // Handle h1 blocks from API
+      // Handle h1 blocks from API - convert to h2 to avoid duplicate H1
       case "h1":
         return (
-          <h1
+          <h2
             key={index}
-            className="font-lexend text-3xl sm:text-4xl font-bold text-text mt-4 mb-6 leading-tight"
+            className="font-lexend text-2xl sm:text-3xl font-bold text-text mt-10 mb-4 leading-tight"
           >
             {block.content}
-          </h1>
+          </h2>
         );
 
       // Handle h2 blocks from API
@@ -120,7 +145,7 @@ export default function ArticleContent({ content }: ArticleContentProps) {
             } list-inside space-y-2`}
           >
             {block.items?.map((item, i) => (
-              <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+              <li key={i} dangerouslySetInnerHTML={{ __html: sanitizeHTML(item) }} />
             ))}
           </ListTag>
         );

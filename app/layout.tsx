@@ -6,7 +6,10 @@ import ToastProvider from "@/components/ToastProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-export const metadata: Metadata = defaultMetadata;
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  metadataBase: new URL("https://interviewscreener.com"),
+};
 
 export default function RootLayout({
   children,

@@ -16,7 +16,7 @@ import ArticleCard from "@/components/ArticleCard";
 import { LuCalendar, LuClock5, LuUser } from "react-icons/lu";
 
 interface ArticlePageProps {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }
 
 /**
@@ -39,23 +39,38 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ArticlePageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = params;
   const article = await fetchArticleBySlug(slug);
 
   if (!article) {
     return {
       title: "Article Not Found",
+      robots: { index: false, follow: false },
     };
   }
+
+  const articleSlug = article.slug || article.metadata?.slug;
+  const articleUrl = `https://interviewscreener.com/articles/${articleSlug}`;
+  
+  // Ensure OG image is absolute URL
+  const ogImage = article.metadata?.ogImage 
+    ? article.metadata.ogImage.startsWith('http') 
+      ? article.metadata.ogImage 
+      : `https://interviewscreener.com${article.metadata.ogImage}`
+    : undefined;
 
   return {
     title: article.metadata?.title || article.title,
     description: article.metadata?.metaDescription || article.excerpt,
     keywords: article.metadata?.keywords || article.tags?.join(", "),
+    alternates: {
+      canonical: articleUrl,
+    },
     openGraph: {
       title: article.metadata?.title || article.title,
       description: article.metadata?.metaDescription || article.excerpt,
-      images: article.metadata?.ogImage ? [article.metadata.ogImage] : [],
+      url: articleUrl,
+      images: ogImage ? [ogImage] : [],
       type: "article",
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
@@ -65,7 +80,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: article.metadata?.title || article.title,
       description: article.metadata?.metaDescription || article.excerpt,
-      images: article.metadata?.ogImage ? [article.metadata.ogImage] : [],
+      images: ogImage ? [ogImage] : [],
     },
   };
 }
@@ -75,7 +90,7 @@ export async function generateMetadata({
  * Dynamic route with ISR (Incremental Static Regeneration)
  */
 export default async function ArticleDetailPage({ params }: ArticlePageProps) {
-  const { slug } = await params;
+  const { slug } = params;
   const article = await fetchArticleBySlug(slug);
 
   // If article not found, show 404
@@ -91,6 +106,13 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
     article.readingTime || calculateReadingTime(article.content);
   const articleSlug = article.slug || article.metadata.slug;
   const articleUrl = `https://interviewscreener.com/articles/${articleSlug}`;
+  
+  // Ensure OG image is absolute URL (same logic as in metadata)
+  const ogImage = article.metadata?.ogImage 
+    ? article.metadata.ogImage.startsWith('http') 
+      ? article.metadata.ogImage 
+      : `https://interviewscreener.com${article.metadata.ogImage}`
+    : null;
 
   // Breadcrumb items
   const breadcrumbItems = [
@@ -177,10 +199,10 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
           </header>
 
           {/* Featured Image */}
-          {article.metadata?.ogImage && (
+          {ogImage && (
             <div className="rounded-t-xl overflow-hidden max-w-4xl 3xl:max-w-5xl mx-auto">
               <Image
-                src={article.metadata.ogImage}
+                src={ogImage}
                 alt={article.title || article.metadata.title}
                 width={1200}
                 height={675}
@@ -256,4 +278,6 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
 }
 
 
-export const revalidate = 0;
+// Revalidate every 5 minutes (300 seconds) for ISR caching
+// This reduces server load while keeping content reasonably fresh
+export const revalidate = 300;

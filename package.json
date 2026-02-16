@@ -13,6 +13,8 @@
     "@lottiefiles/react-lottie-player": "^3.6.0",
     "axios": "^1.13.5",
     "chart.js": "^4.5.1",
+    "dompurify": "^3.3.1",
+    "isomorphic-dompurify": "^3.0.0-rc.2",
     "next": "16.1.6",
     "ogl": "^1.0.11",
     "react": "19.2.3",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/dompurify": "^3.0.5",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
