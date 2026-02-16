@@ -16,7 +16,7 @@ import ArticleCard from "@/components/ArticleCard";
 import { LuCalendar, LuClock5, LuUser } from "react-icons/lu";
 
 interface ArticlePageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 /**
@@ -39,7 +39,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ArticlePageProps): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await fetchArticleBySlug(slug);
 
   if (!article) {
@@ -90,7 +90,7 @@ export async function generateMetadata({
  * Dynamic route with ISR (Incremental Static Regeneration)
  */
 export default async function ArticleDetailPage({ params }: ArticlePageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await fetchArticleBySlug(slug);
 
   // If article not found, show 404
