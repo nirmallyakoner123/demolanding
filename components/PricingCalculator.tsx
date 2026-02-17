@@ -1,7 +1,14 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { BsQuestionCircle } from "react-icons/bs";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  useInView,
+} from "motion/react";
 
 // ============================================
 // BASE PRICING DATA (Static Configuration)
@@ -82,6 +89,29 @@ const VOICE_ENGINES = [
   { id: "openai", label: "OpenAI" },
 ];
 
+// Counter Component for smooth price transitions
+function PriceCounter({
+  value,
+  decimals = 2,
+}: {
+  value: number;
+  decimals?: number;
+}) {
+  const count = useMotionValue(value);
+  const rounded = useTransform(count, (latest) =>
+    latest.toLocaleString(undefined, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }),
+  );
+
+  useEffect(() => {
+    animate(count, value, { duration: 0.5, ease: "easeOut" });
+  }, [value, count]);
+
+  return <motion.span>{rounded}</motion.span>;
+}
+
 export default function PricingCalculator() {
   // ============================================
   // STATE MANAGEMENT
@@ -161,14 +191,6 @@ export default function PricingCalculator() {
   };
 
   // @ts-ignore
-  const formatCurrencyTwoDecimals = (value) => {
-    return value.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
-
-  // @ts-ignore
   const formatLargeCurrency = (value) => {
     return value.toLocaleString(undefined, {
       minimumFractionDigits: 0,
@@ -197,47 +219,67 @@ export default function PricingCalculator() {
           <span className="absolute w-[18px] h-[18px] bg-background-white border border-zinc-200 rounded-full z-3 -bottom-[9px] -right-[9px]" />
 
           <div className="flex justify-center">
-            <div className="w-full lg:w-10/12">
-              <div className="text-center">
-                <h2 className="text-custom text-2xl lg:text-[50px] font-normal leading-tight max-w-[90%] lg:max-w-[600px] mx-auto font-lexend">
-                  Cut Costs, Save Time, and Hire{" "}
-                  <span className="text-primary">Smarter</span>
-                </h2>
-              </div>
-              <div className="text-custom text-sm md:text-base xl:text-lg opacity-70 font-medium max-w-[600px] mx-auto mb-4 text-center">
+            <div className="w-full lg:w-10/12 text-center">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="text-custom text-2xl lg:text-[50px] font-normal leading-tight max-w-[90%] lg:max-w-[600px] mx-auto font-lexend"
+              >
+                Cut Costs, Save Time, and Hire{" "}
+                <span className="text-primary">Smarter</span>
+              </motion.h2>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-custom text-sm md:text-base xl:text-lg opacity-70 font-medium max-w-[600px] mx-auto mb-4"
+              >
                 <p className="mt-2 mb-10">
                   AI-powered hiring eliminates wasted hours, speeds up
                   decisions, and reduces costly bad hires, saving you time and
                   money.
                 </p>
-              </div>
+              </motion.div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4"
+          >
             {/* Left Column - Configuration */}
             <div className="lg:col-span-7">
               {/* Plan Selection */}
-              <div className="bg-white border border-zinc-200 rounded-xl p-5 mb-2">
+              <div className="bg-white border border-zinc-200 rounded-xl p-5 mb-2 shadow-sm">
                 <div className="flex items-center justify-between mb-2">
                   <h6 className="text-sm font-bold text-custom mb-0">
                     Select a plan
                   </h6>
                   {selectedPlan !== "starter" && (
-                    <div className="hidden sm:block md:hidden lg:block xl:hidden">
+                    <motion.div
+                      layout
+                      className="hidden sm:block md:hidden lg:block xl:hidden"
+                    >
                       <div className="bg-primary text-white px-2.5 py-1 rounded-lg text-sm">
                         {`${Math.round(
                           (1 - PLAN_DISCOUNTS[selectedPlan]) * 100,
                         )}% more savings`}
                       </div>
-                    </div>
+                    </motion.div>
                   )}
                 </div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="flex flex-wrap gap-4 sm:gap-6">
                     {["starter", "pro", "scale", "enterprise"].map((plan) => (
-                      <label
+                      <motion.label
                         key={plan}
+                        whileHover={{ x: 2 }}
                         className="flex items-center gap-2 cursor-pointer text-sm text-custom"
                       >
                         <input
@@ -245,27 +287,32 @@ export default function PricingCalculator() {
                           name="plan"
                           checked={selectedPlan === plan}
                           onChange={() => setSelectedPlan(plan)}
-                          className="w-4 h-4 text-primary border-zinc-200 focus:ring-primary"
+                          className="w-4 h-4 accent-primary border-zinc-200 focus:ring-primary cursor-pointer"
                         />
                         {plan.charAt(0).toUpperCase() + plan.slice(1)}
-                      </label>
+                      </motion.label>
                     ))}
                   </div>
 
                   {selectedPlan !== "starter" && (
-                    <div className="block sm:hidden md:block lg:hidden xl:block">
-                      <div className="bg-primary text-white px-2.5 py-1 rounded-lg text-sm">
+                    <motion.div
+                      layout
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="block sm:hidden md:block lg:hidden xl:block"
+                    >
+                      <div className="bg-primary text-white px-2.5 py-1 rounded-lg text-sm shadow-sm">
                         {`${Math.round(
                           (1 - PLAN_DISCOUNTS[selectedPlan]) * 100,
                         )}% more savings`}
                       </div>
-                    </div>
+                    </motion.div>
                   )}
                 </div>
               </div>
 
               {/* Candidate Evaluation */}
-              <div className="bg-white border border-zinc-200 rounded-xl p-5 mb-2">
+              <div className="bg-white border border-zinc-200 rounded-xl p-5 mb-2 shadow-sm">
                 <h5 className="text-lg font-bold text-custom mb-4">
                   Candidate Evaluation
                 </h5>
@@ -276,7 +323,7 @@ export default function PricingCalculator() {
                       Total CVs per month
                     </span>
                     <span className="font-bold text-custom">
-                      {totalCVs.toLocaleString()}
+                      <PriceCounter value={totalCVs} decimals={0} />
                     </span>
                   </div>
                   <input
@@ -323,19 +370,22 @@ export default function PricingCalculator() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {calculations.activeTasks.map((task) => (
-                      <span
+                      <motion.span
                         key={task}
+                        layout
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
                         className="inline-block px-2 py-1 bg-background border border-zinc-200 rounded-full text-xs text-custom"
                       >
                         {task}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>
               </div>
 
               {/* AI Interview */}
-              <div className="bg-white border border-zinc-200 rounded-xl p-5">
+              <div className="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
                 <h5 className="text-lg font-bold text-custom mb-4">
                   AI Interview
                 </h5>
@@ -344,7 +394,7 @@ export default function PricingCalculator() {
                   <div className="flex justify-between items-center mb-3 text-small">
                     <span>Monthly interview minutes</span>
                     <span className="font-semibold text-custom">
-                      {interviewMinutes.toLocaleString()} min
+                      <PriceCounter value={interviewMinutes} decimals={0} /> min
                       {interviewMinutes > 0 && (
                         <span className="text-gray-500 text-xs ml-2 font-normal hidden sm:inline">
                           ({Math.round(interviewMinutes / 15).toLocaleString()}{" "}
@@ -400,17 +450,19 @@ export default function PricingCalculator() {
                   </h6>
                   <div className="flex flex-wrap gap-2">
                     {LLM_MODELS.map((model) => (
-                      <button
+                      <motion.button
                         key={model.id}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.95 }}
                         className={`px-4 py-2 rounded-full border text-xs transition-all whitespace-nowrap ${
                           selectedLLM === model.id
-                            ? "bg-primary border-primary text-white"
-                            : "bg-white border-zinc-200 text-custom hover:border-primary hover:bg-primary hover:text-white"
+                            ? "bg-primary border-primary text-white shadow-md shadow-primary/20"
+                            : "bg-white border-zinc-200 text-custom hover:border-primary/50"
                         }`}
                         onClick={() => setSelectedLLM(model.id)}
                       >
                         {model.label}
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
@@ -421,17 +473,19 @@ export default function PricingCalculator() {
                   </h6>
                   <div className="flex flex-wrap gap-2">
                     {VOICE_ENGINES.map((engine) => (
-                      <button
+                      <motion.button
                         key={engine.id}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.95 }}
                         className={`px-4 py-2 rounded-full border text-sm transition-all whitespace-nowrap ${
                           selectedVoice === engine.id
-                            ? "bg-primary border-primary text-white"
-                            : "bg-white border-zinc-200 text-custom hover:border-primary hover:bg-primary hover:text-white"
+                            ? "bg-primary border-primary text-white shadow-md shadow-primary/20"
+                            : "bg-white border-zinc-200 text-custom hover:border-primary/50"
                         }`}
                         onClick={() => setSelectedVoice(engine.id)}
                       >
                         {engine.label}
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
@@ -440,7 +494,7 @@ export default function PricingCalculator() {
 
             {/* Right Column - Cost Breakdown */}
             <div className="lg:col-span-5">
-              <div className="bg-white border border-zinc-200 rounded-xl p-5 sticky top-4">
+              <div className="bg-white border border-zinc-200 rounded-xl p-5 sticky top-4 shadow-sm">
                 <h5 className="text-lg font-bold text-custom mb-6">
                   Cost Breakdown
                 </h5>
@@ -464,7 +518,11 @@ export default function PricingCalculator() {
                       </div>
                     </div>
                     <div className="text-right font-medium text-custom text-base">
-                      ${formatCurrency(calculations.costPerTask)}
+                      $
+                      <PriceCounter
+                        value={calculations.costPerTask}
+                        decimals={4}
+                      />
                     </div>
                   </div>
 
@@ -476,7 +534,11 @@ export default function PricingCalculator() {
                         {calculations.enabledTasksCount}
                       </span>
                       <span className="font-medium text-custom text-base">
-                        ${formatCurrency(calculations.costPerCandidate)}
+                        $
+                        <PriceCounter
+                          value={calculations.costPerCandidate}
+                          decimals={4}
+                        />
                       </span>
                     </div>
                   </div>
@@ -498,7 +560,11 @@ export default function PricingCalculator() {
                         {totalCVs.toLocaleString()}
                       </span>
                       <span className="text-primary font-semibold text-base">
-                        ${formatLargeCurrency(calculations.totalEvaluationCost)}
+                        $
+                        <PriceCounter
+                          value={calculations.totalEvaluationCost}
+                          decimals={0}
+                        />
                       </span>
                     </div>
                   </div>
@@ -506,7 +572,11 @@ export default function PricingCalculator() {
 
                 {/* AI Interview Costs */}
                 {interviewMinutes > 0 && (
-                  <div className="pt-6 pb-3 border-b border-zinc-200 last:border-0 last:pb-0">
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="pt-6 pb-3 border-b border-zinc-200 last:border-0 last:pb-0 overflow-hidden"
+                  >
                     <h6 className="text-base font-bold text-custom mb-3">
                       AI Interview
                     </h6>
@@ -521,7 +591,11 @@ export default function PricingCalculator() {
                         Cost per min
                       </div>
                       <div className="text-right font-medium text-custom text-base">
-                        ${formatCurrency(calculations.llmCostPerMin)}
+                        $
+                        <PriceCounter
+                          value={calculations.llmCostPerMin}
+                          decimals={4}
+                        />
                       </div>
                     </div>
 
@@ -539,14 +613,22 @@ export default function PricingCalculator() {
                         cost per min
                       </div>
                       <div className="text-right font-medium text-custom text-base">
-                        ${formatCurrency(calculations.voiceCostPerMin)}
+                        $
+                        <PriceCounter
+                          value={calculations.voiceCostPerMin}
+                          decimals={4}
+                        />
                       </div>
                     </div>
 
                     <div className="flex justify-between items-start mb-3 text-sm">
                       <div className="text-custom">Total cost per min</div>
                       <div className="text-right font-medium text-custom text-base">
-                        ${formatCurrency(calculations.totalCostPerMin)}
+                        $
+                        <PriceCounter
+                          value={calculations.totalCostPerMin}
+                          decimals={4}
+                        />
                       </div>
                     </div>
 
@@ -570,11 +652,14 @@ export default function PricingCalculator() {
                         </span>
                         <span className="text-primary font-semibold text-base">
                           $
-                          {formatLargeCurrency(calculations.totalInterviewCost)}
+                          <PriceCounter
+                            value={calculations.totalInterviewCost}
+                            decimals={0}
+                          />
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Total Cost Section */}
@@ -583,12 +668,9 @@ export default function PricingCalculator() {
                     Estimated Monthly Cost
                   </h6>
                   <div className="text-primary text-3xl lg:text-4xl font-bold leading-none mb-2">
-                    $
-                    {formatCurrencyTwoDecimals(
-                      calculations.estimatedMonthlyCost,
-                    )}
+                    $<PriceCounter value={calculations.estimatedMonthlyCost} />
                   </div>
-                  <p className="text-sm text-gray-500 mb-0">
+                  <motion.p layout className="text-sm text-gray-500 mb-0">
                     Based on {totalCVs.toLocaleString()} candidate evaluations
                     {interviewMinutes > 0 &&
                       ` + ${interviewMinutes.toLocaleString()} min monthly interview minutes`}
@@ -599,11 +681,11 @@ export default function PricingCalculator() {
                       } plan: ${Math.round(
                         (1 - PLAN_DISCOUNTS[selectedPlan]) * 100,
                       )}% discount applied)`}
-                  </p>
+                  </motion.p>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

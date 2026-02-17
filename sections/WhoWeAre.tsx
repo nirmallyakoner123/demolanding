@@ -1,6 +1,27 @@
+"use client";
+
 import StarIcon from "@/components/icons/StarIcon";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  useInView,
+} from "motion/react";
+import { useEffect, useRef } from "react";
 
 export default function WhoWeAre() {
+  const count = useMotionValue(40);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    if (inView) {
+      animate(count, 80, { duration: 2, ease: "easeOut" });
+    }
+  }, [inView, count]);
+
   return (
     <div className="who_we_are relative my-0">
       {/* Top Gradient Border */}
@@ -33,8 +54,20 @@ export default function WhoWeAre() {
             <div className="w-full lg:w-10/12">
               <div className="text-center">
                 <h2 className="text-custom text-2xl lg:text-[50px] font-normal leading-tight max-w-[90%] lg:max-w-[706px] mx-auto font-lexend">
-                  We automate <span className="text-primary">80%</span> of
-                  recruitment tasks so you can
+                  We automate{" "}
+                  <motion.span
+                    ref={ref}
+                    className="text-primary inline-block relative"
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatDelay: 1,
+                      times: [0, 0.5, 1],
+                    }}
+                  >
+                    <motion.span>{rounded}</motion.span>%
+                  </motion.span>{" "}
+                  of recruitment tasks so you can
                   <span className="block text-custom-light px-5">
                     hire faster, smarter, and stress-free
                   </span>

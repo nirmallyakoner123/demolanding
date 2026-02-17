@@ -128,6 +128,9 @@ export default function PricingContent() {
         }}
       />
 
+      {/* Bottom Gradient Border */}
+      <div className="absolute bottom-0 left-0 w-full h-[2px] z-[-1] opacity-20 bg-linear-to-r from-transparent via-[#2e2e2e] to-transparent" />
+
       {/* Background Image Overlay */}
       <div className="absolute top-0 left-0 w-full h-full z-[-2]">
         <Image
@@ -147,7 +150,7 @@ export default function PricingContent() {
           </h1>
           <p className="text-custom text-base lg:text-lg font-nunito font-medium leading-normal opacity-70">
             New users receive{" "}
-            <strong className="font-extrabold opacity-100 text-custom">
+            <strong className="font-bold opacity-100 text-custom">
               100 free credits
             </strong>{" "}
             • Upgrades anytime • Powered by GPT-5

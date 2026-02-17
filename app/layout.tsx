@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { defaultMetadata } from "@/lib/seo";
+import { defaultMetadata, generateOrganizationStructuredData } from "@/lib/seo";
 import ToastProvider from "@/components/ToastProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  ...defaultMetadata,
   metadataBase: new URL("https://interviewscreener.com"),
+  ...defaultMetadata,
 };
 
 export default function RootLayout({
@@ -37,9 +37,13 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
           rel="stylesheet"
         />
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-          rel="stylesheet"
+        
+        {/* Organization Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateOrganizationStructuredData()),
+          }}
         />
       </head>
       <body className="font-nunito antialiased" suppressHydrationWarning>

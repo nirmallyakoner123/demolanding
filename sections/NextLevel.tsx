@@ -2,6 +2,7 @@
 
 import FireIcon from "@/components/icons/FireIcon";
 import VideoWithFallback from "@/components/VideoWithFallback";
+import { motion } from "motion/react";
 
 const nextLevelData = [
   {
@@ -57,32 +58,54 @@ export default function NextLevel() {
           <span className="absolute w-[18px] h-[18px] bg-white border border-zinc-200 rounded-full z-3 -bottom-[9px] -right-[9px]" />
 
           <div className="text-center mb-10 lg:mb-12">
-            <div className="mb-4 inline-flex items-center justify-center bg-white px-[15px] py-[8px] rounded-full border border-border-light text-custom text-base font-normal">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mb-4 inline-flex items-center justify-center bg-white px-[15px] py-[8px] rounded-full border border-border-light text-custom text-base font-normal"
+            >
               <span className="mr-2 flex items-center justify-center">
                 <FireIcon />
               </span>
               Features
-            </div>
+            </motion.div>
 
-            <h2 className="text-custom text-2xl lg:text-[50px] font-normal leading-tight font-lexend max-w-[90%] mx-auto">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-custom text-2xl lg:text-[50px] font-normal leading-tight font-lexend max-w-[90%] mx-auto"
+            >
               Next-Level Hiring, Powered by{" "}
               <span className="text-primary">AI</span>
-            </h2>
+            </motion.h2>
 
-            <div className="mt-4 text-custom text-sm lg:text-base xl:text-xl opacity-70 font-medium max-w-[700px] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-4 text-custom text-sm lg:text-base xl:text-xl opacity-70 font-medium max-w-[700px] mx-auto"
+            >
               <p>
                 Say goodbye to slow, manual hiring. With AI-powered interview
                 automation, real-time skill analysis, and bias-free evaluations,
                 you can make data-driven hiring decisions instantly, without
                 wasting time.
               </p>
-            </div>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
             {nextLevelData.map((item, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                 className="bg-white rounded-xl border border-zinc-200 h-full overflow-hidden flex flex-col"
               >
                 <div className="p-6 mx-2 pb-1 grow">
@@ -113,7 +136,7 @@ export default function NextLevel() {
                     />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

@@ -43,7 +43,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            value: 'strict-origin-when-cross-origin',
           },
           {
             key: 'Cross-Origin-Opener-Policy',
@@ -55,7 +55,20 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.google-analytics.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://interview-screener.s3.us-east-2.amazonaws.com https://lh3.googleusercontent.com https://www.facebook.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://www.facebook.com; frame-src 'self' https://www.youtube.com;",
+            value: [
+              "default-src 'self'",
+              "base-uri 'self'",
+              "frame-ancestors 'self'",
+              "object-src 'none'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://app.truconversion.com",
+              "script-src-attr 'none'",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com data:",
+              "img-src 'self' data: blob: https://interview-screener.s3.us-east-2.amazonaws.com https://interviewscreener.com https://lh3.googleusercontent.com https://www.facebook.com",
+              "connect-src 'self' https: wss:",
+              "frame-src 'self' https://www.youtube.com",
+              "upgrade-insecure-requests"
+            ].join('; '),
           },
         ],
       },

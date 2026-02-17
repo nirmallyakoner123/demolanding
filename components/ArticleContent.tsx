@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import DOMPurify from "isomorphic-dompurify";
 
@@ -16,29 +18,37 @@ interface ArticleContentProps {
   content: any[];
 }
 
-/**
- * Sanitize HTML content to prevent XSS attacks
- * Uses DOMPurify to clean potentially dangerous HTML
- */
-const sanitizeHTML = (html: string): string => {
-  const clean = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: [
-      'p', 'br', 'strong', 'em', 'b', 'i', 'a', 
-      'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'span'
-    ],
-    ALLOWED_ATTR: ['href', 'target', 'rel'],
-  });
-
-  // Force safe rel for target=_blank to prevent security issues
-  return clean.replace(
-    /<a([^>]*?)target=["']_blank["']([^>]*?)>/gi,
-    (match, p1, p2) => {
-      // If rel already exists, keep it; else inject safe rel
-      if (/rel=["'].*?["']/i.test(match)) return match;
-      return `<a${p1}target="_blank" rel="noopener noreferrer nofollow"${p2}>`;
-    }
-  );
+// Configure DOMPurify
+const sanitizeConfig = {
+  ALLOWED_TAGS: [
+    'p', 'br', 'strong', 'em', 'b', 'i', 'a', 'ul', 'ol', 'li',
+    'code', 'pre', 'blockquote', 'span'
+  ],
+  ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
+  ADD_ATTR: ['target', 'rel'],
 };
+
+// Sanitize HTML content
+function sanitizeHTML(html: string): string {
+  const clean = DOMPurify.sanitize(html, sanitizeConfig);
+  
+  // Add security attributes to external links
+  if (typeof window !== 'undefined') {
+    const div = document.createElement('div');
+    div.innerHTML = clean;
+    const links = div.querySelectorAll('a[href]');
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer nofollow');
+      }
+    });
+    return div.innerHTML;
+  }
+  
+  return clean;
+}
 
 export default function ArticleContent({ content }: ArticleContentProps) {
   if (!content || !Array.isArray(content)) {
@@ -58,7 +68,7 @@ export default function ArticleContent({ content }: ArticleContentProps) {
           />
         );
 
-      // Handle h1 blocks from API - convert to h2 to avoid duplicate H1
+      // Handle h1 blocks from API - CONVERT TO H2 to avoid duplicate H1
       case "h1":
         return (
           <h2

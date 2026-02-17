@@ -3,6 +3,7 @@
 import { useState } from "react";
 import FaqIcon from "@/components/icons/FaqIcon";
 import { HiChevronDown } from "react-icons/hi2";
+import { motion, AnimatePresence } from "motion/react";
 
 const faqData = [
   {
@@ -51,23 +52,41 @@ export default function FAQ() {
           <div className="absolute top-0 right-0 w-[2px] h-full z-[-1] opacity-20 bg-linear-to-b from-[#2e2e2e]/0 via-[#2e2e2e] to-[#2e2e2e]/0" />
 
           <div className="mb-12 px-4 text-center">
-            <div className="mb-4 inline-flex items-center justify-center bg-white px-4 py-2 rounded-full border border-border-light text-badge text-base font-normal w-fit mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mb-4 inline-flex items-center justify-center bg-white px-4 py-2 rounded-full border border-border-light text-badge text-base font-normal w-fit mx-auto"
+            >
               <span className="mr-2 flex items-center justify-center">
                 <FaqIcon />
               </span>
               FAQ
-            </div>
+            </motion.div>
 
-            <h2 className="text-custom text-3xl font-normal leading-tight max-w-[90%] lg:max-w-[706px] mx-auto font-lexend">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-custom text-3xl font-normal leading-tight max-w-[90%] lg:max-w-[706px] mx-auto font-lexend"
+            >
               Frequently Asked Questions
-            </h2>
+            </motion.h2>
           </div>
 
           <div className="px-4">
-            <div className="max-w-3xl mx-auto my-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="max-w-3xl mx-auto my-10"
+            >
               {faqData.map((item, index) => (
                 <div key={index} className="relative pb-2 mb-2 border-b-0">
-                  {/* Item Separator Gradient (except for last item ideally, but styles imply all have it) */}
+                  {/* Item Separator Gradient */}
                   <div className="absolute bottom-0 right-5 w-full h-px opacity-10 pointer-events-none bg-linear-to-r from-[#2e2e2e]/0 via-[#2e2e2e] to-[#2e2e2e]/0" />
 
                   <button
@@ -75,21 +94,34 @@ export default function FAQ() {
                     onClick={() => toggleAccordion(index)}
                   >
                     <span>{item.title}</span>
-                    <HiChevronDown
-                      className={`w-5 h-5 transition-transform duration-200 ${openIndex === index ? "transform rotate-180" : ""}`}
-                    />
+                    <motion.span
+                      animate={{ rotate: openIndex === index ? 180 : 0 }}
+                      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                      className="flex items-center justify-center text-zinc-400"
+                    >
+                      <HiChevronDown className="w-5 h-5" />
+                    </motion.span>
                   </button>
 
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out px-0 mx-auto max-w-[780px] ${openIndex === index ? "max-h-[500px] opacity-100 pb-5" : "max-h-0 opacity-0"}`}
-                  >
-                    <p className="text-custom text-[18px] font-normal opacity-70 mb-0 px-5">
-                      {item.content}
-                    </p>
-                  </div>
+                  <AnimatePresence initial={false}>
+                    {openIndex === index && (
+                      <motion.div
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                        className="overflow-hidden px-0 mx-auto max-w-[780px]"
+                      >
+                        <p className="text-custom text-[18px] font-normal opacity-70 mb-0 pb-5 px-5">
+                          {item.content}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

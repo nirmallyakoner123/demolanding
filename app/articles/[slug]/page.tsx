@@ -45,32 +45,52 @@ export async function generateMetadata({
   if (!article) {
     return {
       title: "Article Not Found",
-      robots: { index: false, follow: false },
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
   const articleSlug = article.slug || article.metadata?.slug;
   const articleUrl = `https://interviewscreener.com/articles/${articleSlug}`;
   
-  // Ensure OG image is absolute URL
-  const ogImage = article.metadata?.ogImage 
-    ? article.metadata.ogImage.startsWith('http') 
-      ? article.metadata.ogImage 
-      : `https://interviewscreener.com${article.metadata.ogImage}`
-    : undefined;
+  // Convert relative image URLs to absolute
+  const ogImage = article.metadata?.ogImage;
+  const absoluteImageUrl = ogImage?.startsWith('http') 
+    ? ogImage 
+    : `https://interviewscreener.com${ogImage}`;
+  
+  // Detect image type from URL extension
+  const getImageType = (url: string): string => {
+    if (url.endsWith('.webp')) return 'image/webp';
+    if (url.endsWith('.png')) return 'image/png';
+    if (url.endsWith('.jpg') || url.endsWith('.jpeg')) return 'image/jpeg';
+    return 'image/jpeg'; // default fallback
+  };
 
   return {
     title: article.metadata?.title || article.title,
     description: article.metadata?.metaDescription || article.excerpt,
     keywords: article.metadata?.keywords || article.tags?.join(", "),
+    
+    // Add canonical URL
     alternates: {
       canonical: articleUrl,
     },
+    
     openGraph: {
       title: article.metadata?.title || article.title,
       description: article.metadata?.metaDescription || article.excerpt,
-      url: articleUrl,
-      images: ogImage ? [ogImage] : [],
+      url: articleUrl, // Add og:url
+      siteName: "Interview Screener", // Add og:site_name
+      images: ogImage ? [{
+        url: absoluteImageUrl,
+        width: 1200,
+        height: 630,
+        alt: article.metadata?.title || article.title,
+        type: getImageType(absoluteImageUrl),
+      }] : [],
       type: "article",
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
@@ -80,7 +100,12 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: article.metadata?.title || article.title,
       description: article.metadata?.metaDescription || article.excerpt,
-      images: ogImage ? [ogImage] : [],
+      images: ogImage ? [{
+        url: absoluteImageUrl,
+        width: 1200,
+        height: 630,
+        alt: article.metadata?.title || article.title,
+      }] : [],
     },
   };
 }
@@ -106,13 +131,6 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
     article.readingTime || calculateReadingTime(article.content);
   const articleSlug = article.slug || article.metadata.slug;
   const articleUrl = `https://interviewscreener.com/articles/${articleSlug}`;
-  
-  // Ensure OG image is absolute URL (same logic as in metadata)
-  const ogImage = article.metadata?.ogImage 
-    ? article.metadata.ogImage.startsWith('http') 
-      ? article.metadata.ogImage 
-      : `https://interviewscreener.com${article.metadata.ogImage}`
-    : null;
 
   // Breadcrumb items
   const breadcrumbItems = [
@@ -120,6 +138,8 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
     { label: "Articles", path: "/articles" },
     { label: article.title || article.metadata.title, path: "" },
   ];
+
+  console.log("article", article);
 
   return (
     <>
@@ -135,6 +155,9 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
               "linear-gradient(0deg, rgba(0, 160, 226, 0.00) 24.86%, rgba(51, 136, 255, 0.10) 100%)",
           }}
         />
+
+        {/* Bottom Gradient Border */}
+        <div className="absolute bottom-0 left-0 w-full h-[2px] z-[-1] opacity-20 bg-linear-to-r from-transparent via-[#2e2e2e] to-transparent" />
 
         {/* Background Image Overlay */}
         <div className="absolute top-0 left-0 w-full h-full z-[-2]">
@@ -199,10 +222,14 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
           </header>
 
           {/* Featured Image */}
-          {ogImage && (
+          {article.metadata?.ogImage && (
             <div className="rounded-t-xl overflow-hidden max-w-4xl 3xl:max-w-5xl mx-auto">
               <Image
-                src={ogImage}
+                src={
+                  article.metadata.ogImage.startsWith('http')
+                    ? article.metadata.ogImage
+                    : `https://interviewscreener.com${article.metadata.ogImage}`
+                }
                 alt={article.title || article.metadata.title}
                 width={1200}
                 height={675}
@@ -213,7 +240,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
           )}
 
           {/* Article Content */}
-          <div className="max-w-4xl 3xl:max-w-5xl mx-auto mb-12 bg-white p-3.5 rounded-b-xl">
+          <div className="max-w-4xl 3xl:max-w-5xl mx-auto mb-12 bg-white py-3.5 px-3 lg:px-8 rounded-b-xl">
             <ArticleContent content={article.content} />
           </div>
 
@@ -231,7 +258,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
                 ))}
               </div>
             </div>
-          )}  
+          )}
 
           {/* Share Again at Bottom */}
           <div className="mb-12 pb-12 border-b border-zinc-200 max-w-4xl 3xl:max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
@@ -243,12 +270,11 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
               url={articleUrl}
             />
           </div>
-
         </article>
 
         {/* Related Articles */}
         {relatedArticles.length > 0 && (
-          <section className="container mx-auto px-4 mt-16 pb-12 border-b border-zinc-200">
+          <section className="container mx-auto px-4 py-12">
             <h2 className="font-lexend text-3xl sm:text-2xl font-bold text-text mb-8 text-center">
               Related Articles
             </h2>
@@ -277,7 +303,4 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
   );
 }
 
-
-// Revalidate every 5 minutes (300 seconds) for ISR caching
-// This reduces server load while keeping content reasonably fresh
-export const revalidate = 300;
+export const revalidate = 300; // 5 minutes ISR caching

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { HiArrowSmallRight } from "react-icons/hi2";
+import { motion } from "motion/react";
 
 export default function StartHiring() {
   useEffect(() => {
@@ -39,12 +40,24 @@ export default function StartHiring() {
                     Say goodbye to manual screening and slow hiring.
                   </p>
 
-                  <Link
-                    href="/pricing"
-                    className="d-inline-flex inline-flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-lg transition-colors duration-200"
+                  <motion.div
+                    whileHover={{
+                      y: -2,
+                    }}
+                    whileTap={{ scale: 0.98, y: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 17,
+                    }}
                   >
-                    Get Started <HiArrowSmallRight className="w-5 h-5" />
-                  </Link>
+                    <Link
+                      href="/pricing"
+                      className="d-inline-flex inline-flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-lg transition-colors duration-200"
+                    >
+                      Get Started <HiArrowSmallRight className="w-5 h-5" />
+                    </Link>
+                  </motion.div>
                 </div>
               </div>
             </div>

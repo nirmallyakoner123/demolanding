@@ -6,7 +6,7 @@ import { generateSEOMetadata } from '@/lib/seo';
 
 // Disable caching to always fetch fresh data
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 300; // 5 minutes ISR caching
 
 /**
  * Articles Listing Page Metadata
@@ -34,7 +34,10 @@ export default async function ArticlesPage() {
           background: 'linear-gradient(0deg, rgba(0, 160, 226, 0.00) 24.86%, rgba(51, 136, 255, 0.10) 100%)'
         }}
       />
-      
+
+      {/* Bottom Gradient Border */}
+      <div className="absolute bottom-0 left-0 w-full h-[2px] z-[-1] opacity-20 bg-linear-to-r from-transparent via-[#2e2e2e] to-transparent" />
+
       {/* Background Image Overlay */}
       <div className="absolute top-0 left-0 w-full h-full z-[-2]">
         <Image 

@@ -2,6 +2,26 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://article.backend.interviewscreener.com/articles';
 
+/**
+ * Get cache headers based on environment
+ * Development: no-cache for immediate updates
+ * Production: allow caching (respects backend's 5-minute cache)
+ */
+function getCacheHeaders() {
+    if (process.env.NODE_ENV === 'development') {
+        return {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+        };
+    }
+
+    // Production: allow browser/CDN caching
+    return {
+        'Content-Type': 'application/json',
+    };
+}
+
 export interface Article {
     _id: string;
     slug?: string;
@@ -40,11 +60,7 @@ export interface Article {
 export async function fetchArticles(): Promise<Article[]> {
     try {
         const response = await axios.get(`${API_BASE_URL}/public`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-            },
+            headers: getCacheHeaders(),
         });
 
         // API returns { articles: [...], pagination: {...} }
@@ -62,11 +78,7 @@ export async function fetchArticles(): Promise<Article[]> {
 export async function fetchArticleBySlug(slug: string): Promise<Article | null> {
     try {
         const response = await axios.get(`${API_BASE_URL}/${slug}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-            },
+            headers: getCacheHeaders(),
         });
 
         return response.data || null;

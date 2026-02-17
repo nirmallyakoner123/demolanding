@@ -1,6 +1,7 @@
 import ArticleCard from "@/components/ArticleCard";
 import Link from "next/link";
 import { Article } from "@/lib/api/articles";
+import { HiArrowSmallRight } from "react-icons/hi2";
 
 interface LatestArticlesProps {
   articles: Article[];
@@ -54,9 +55,9 @@ export default function LatestArticles({ articles }: LatestArticlesProps) {
           <div className="text-center">
             <Link
               href="/articles"
-              className="inline-flex items-center justify-center px-8 py-3.5 bg-primary text-white font-nunito font-semibold text-base rounded-btn tracking-btn transition-all duration-300 hover:bg-primary-light hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+              className="inline-flex items-center justify-center px-6 py-2.5 bg-primary text-white font-nunito font-semibold text-base rounded-btn tracking-btn transition-all duration-300 hover:bg-primary-light hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
             >
-              View All Articles
+              View All Articles <HiArrowSmallRight className="w-5 h-5 ms-1" />
             </Link>
           </div>
         </div>

@@ -1,9 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaArrowRightLong } from "react-icons/fa6";
-import { LuCalendar, LuClock5 } from "react-icons/lu";
 import { formatDate, calculateReadingTime } from "@/utils/articleHelpers";
 import { Article } from "@/lib/api/articles";
+import { FaAngleRight } from "react-icons/fa6";
 
 interface ArticleCardProps {
   article: Article;
@@ -32,9 +31,9 @@ export default function ArticleCard({
     <Link
       href={`/articles/${articleSlug}`}
       className={`
-        group block h-full overflow-hidden bg-white rounded-lg border
+        group block h-full overflow-hidden bg-white/10 rounded-lg border
         transition-all duration-300 hover:no-underline
-        hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.1)]
+        hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.1)] p-4
         ${
           featured
             ? "border-primary/20 bg-linear-to-br from-primary/20 to-primary"
@@ -60,7 +59,20 @@ export default function ArticleCard({
         )}
 
         {/* Content */}
-        <div className="flex flex-col flex-1 p-6 sm:p-5">
+        <div className="flex flex-col flex-1 py-4">
+          {/* Meta Info */}
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center font-nunito text-sm text-gray-500">
+              <span>
+                {formatDate(article.publishedAt || article.createdAt || "")}
+              </span>
+            </div>
+            <div className="h-2 w-2 rounded-full bg-gray-400/50"></div>
+            <div className="flex items-center font-nunito text-sm text-gray-500">
+              <span>{readingTime} min read</span>
+            </div>
+          </div>
+
           {/* Title */}
           <h2 className="font-lexend text-xl sm:text-lg font-semibold text-text mb-3 leading-[1.4] line-clamp-2">
             {article.title || article.metadata?.title}
@@ -71,24 +83,10 @@ export default function ArticleCard({
             {article.excerpt || article.metadata?.metaDescription}
           </p>
 
-          {/* Meta Info */}
-          <div className="flex gap-4 mb-4 pt-4 border-t border-zinc-200">
-            <div className="flex items-center gap-1 font-nunito text-xs text-gray-500">
-              <LuCalendar className="text-sm" />
-              <span>
-                {formatDate(article.publishedAt || article.createdAt || "")}
-              </span>
-            </div>
-            <div className="flex items-center gap-1 font-nunito text-xs text-gray-500">
-              <LuClock5 className="text-sm" />
-              <span>{readingTime} min read</span>
-            </div>
-          </div>
-
           {/* Read More Link */}
-          <div className="flex items-center gap-1.5 font-nunito text-small font-semibold text-text transition-all duration-300 group-hover:text-primary">
+          <div className="w-fit flex items-center gap-1 font-nunito text-small font-semibold text-gray-700 px-4 py-1.5 rounded-md transition-all duration-300 group-hover:text-white group-hover:bg-primary group-hover:shadow-md group-hover:shadow-primary/20">
             <span>Read Article</span>
-            <FaArrowRightLong className="text-base transition-transform duration-300 group-hover:translate-x-1" />
+            <FaAngleRight className="text-base transition-transform duration-300 group-hover:translate-x-1" />
           </div>
         </div>
       </div>
