@@ -31,7 +31,10 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                 <IoChevronForward className="text-text-light text-xs" />
               </>
             ) : (
-              <span className="text-text font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px] md:max-w-none md:whitespace-normal md:overflow-visible">
+              <span 
+                className="text-text font-medium overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px] md:max-w-[400px]"
+                aria-current="page"
+              >
                 {item.label}
               </span>
             )}

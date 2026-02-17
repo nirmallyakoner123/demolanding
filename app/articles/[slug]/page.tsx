@@ -132,11 +132,15 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
   const articleSlug = article.slug || article.metadata.slug;
   const articleUrl = `https://interviewscreener.com/articles/${articleSlug}`;
 
-  // Breadcrumb items
+  // Breadcrumb items - truncate article title to avoid long anchor text SEO warning
+  const truncateTitle = (title: string, maxLength: number = 50) => {
+    return title.length > maxLength ? `${title.substring(0, maxLength)}...` : title;
+  };
+  
   const breadcrumbItems = [
     { label: "Home", path: "/" },
     { label: "Articles", path: "/articles" },
-    { label: article.title || article.metadata.title, path: "" },
+    { label: truncateTitle(article.title || article.metadata.title), path: "" },
   ];
 
   console.log("article", article);
