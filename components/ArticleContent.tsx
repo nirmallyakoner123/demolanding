@@ -21,32 +21,44 @@ interface ArticleContentProps {
 // Configure DOMPurify
 const sanitizeConfig = {
   ALLOWED_TAGS: [
-    'p', 'br', 'strong', 'em', 'b', 'i', 'a', 'ul', 'ol', 'li',
-    'code', 'pre', 'blockquote', 'span'
+    "p",
+    "br",
+    "strong",
+    "em",
+    "b",
+    "i",
+    "a",
+    "ul",
+    "ol",
+    "li",
+    "code",
+    "pre",
+    "blockquote",
+    "span",
   ],
-  ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
-  ADD_ATTR: ['target', 'rel'],
+  ALLOWED_ATTR: ["href", "target", "rel", "class"],
+  ADD_ATTR: ["target", "rel"],
 };
 
 // Sanitize HTML content
 function sanitizeHTML(html: string): string {
   const clean = DOMPurify.sanitize(html, sanitizeConfig);
-  
+
   // Add security attributes to external links
-  if (typeof window !== 'undefined') {
-    const div = document.createElement('div');
+  if (typeof window !== "undefined") {
+    const div = document.createElement("div");
     div.innerHTML = clean;
-    const links = div.querySelectorAll('a[href]');
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener noreferrer nofollow');
+    const links = div.querySelectorAll("a[href]");
+    links.forEach((link) => {
+      const href = link.getAttribute("href");
+      if (href && (href.startsWith("http://") || href.startsWith("https://"))) {
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer nofollow");
       }
     });
     return div.innerHTML;
   }
-  
+
   return clean;
 }
 
@@ -64,7 +76,9 @@ export default function ArticleContent({ content }: ArticleContentProps) {
           <p
             key={index}
             className="font-nunito text-font-base leading-[1.8] text-text mb-6"
-            dangerouslySetInnerHTML={{ __html: sanitizeHTML(block.content || "") }}
+            dangerouslySetInnerHTML={{
+              __html: sanitizeHTML(block.content || ""),
+            }}
           />
         );
 
@@ -155,7 +169,10 @@ export default function ArticleContent({ content }: ArticleContentProps) {
             } list-inside space-y-2`}
           >
             {block.items?.map((item, i) => (
-              <li key={i} dangerouslySetInnerHTML={{ __html: sanitizeHTML(item) }} />
+              <li
+                key={i}
+                dangerouslySetInnerHTML={{ __html: sanitizeHTML(item) }}
+              />
             ))}
           </ListTag>
         );

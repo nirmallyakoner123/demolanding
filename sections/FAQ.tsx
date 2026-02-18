@@ -46,7 +46,7 @@ export default function FAQ() {
     <div className="relative z-2" id="faq">
       <div className="container mx-auto px-4">
         {/* Content Wrapper */}
-        <div className="relative py-10 lg:py-16">
+        <div className="relative py-12 lg:py-24">
           {/* Side Gradients */}
           <div className="absolute top-0 left-0 w-[2px] h-full z-[-1] opacity-20 bg-linear-to-b from-[#2e2e2e]/0 via-[#2e2e2e] to-[#2e2e2e]/0" />
           <div className="absolute top-0 right-0 w-[2px] h-full z-[-1] opacity-20 bg-linear-to-b from-[#2e2e2e]/0 via-[#2e2e2e] to-[#2e2e2e]/0" />

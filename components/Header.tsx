@@ -119,10 +119,7 @@ export default function Header() {
                     className="relative px-3 py-2 text-font-base font-normal text-custom transition-colors hover:text-primary group whitespace-nowrap"
                   >
                     {link.label}
-                    <motion.span
-                      layoutId="nav-underline"
-                      className="absolute bottom-0 left-[5%] h-[2px] bg-primary w-0 transition-all duration-300 opacity-0 group-hover:w-[90%] group-hover:opacity-100"
-                    />
+                    <motion.span className="absolute bottom-0 left-[5%] h-[2px] bg-primary w-0 transition-all duration-300 opacity-0 group-hover:w-[90%] group-hover:opacity-100" />
                   </a>
                 ) : (
                   <Link
@@ -134,7 +131,6 @@ export default function Header() {
                   >
                     {link.label}
                     <motion.span
-                      layoutId="nav-underline"
                       className={`
                           absolute bottom-0 left-[5%] h-[2px] bg-primary transition-all duration-300
                           ${pathname === link.href ? "w-[90%] opacity-100" : "w-0 opacity-0 group-hover:w-[90%] group-hover:opacity-100"}

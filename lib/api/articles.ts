@@ -1,26 +1,4 @@
-import axios from 'axios';
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://article.backend.interviewscreener.com/articles';
-
-/**
- * Get cache headers based on environment
- * Development: no-cache for immediate updates
- * Production: allow caching (respects backend's 5-minute cache)
- */
-function getCacheHeaders() {
-    if (process.env.NODE_ENV === 'development') {
-        return {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-        };
-    }
-
-    // Production: allow browser/CDN caching
-    return {
-        'Content-Type': 'application/json',
-    };
-}
 
 export interface Article {
     _id: string;
@@ -43,6 +21,11 @@ export interface Article {
     author?: {
         name: string;
         avatar?: string;
+        socials?: {
+            twitter?: string;
+            linkedin?: string;
+            github?: string;
+        };
     };
     publishedAt?: string;
     updatedAt: string;
@@ -59,12 +42,20 @@ export interface Article {
  */
 export async function fetchArticles(): Promise<Article[]> {
     try {
-        const response = await axios.get(`${API_BASE_URL}/public`, {
-            headers: getCacheHeaders(),
+        const response = await fetch(`${API_BASE_URL}/public`, {
+            next: { revalidate: 300 }, // Cache for 5 minutes
+            headers: {
+                'Content-Type': 'application/json',
+            }
         });
 
+        if (!response.ok) {
+            throw new Error(`Failed to fetch articles: ${response.statusText}`);
+        }
+
+        const data = await response.json();
         // API returns { articles: [...], pagination: {...} }
-        return response.data.articles || response.data || [];
+        return data.articles || data || [];
     } catch (error) {
         console.error('Error fetching articles:', error);
         return [];
@@ -77,11 +68,19 @@ export async function fetchArticles(): Promise<Article[]> {
  */
 export async function fetchArticleBySlug(slug: string): Promise<Article | null> {
     try {
-        const response = await axios.get(`${API_BASE_URL}/${slug}`, {
-            headers: getCacheHeaders(),
+        const response = await fetch(`${API_BASE_URL}/${slug}`, {
+            next: { revalidate: 300 }, // Cache for 5 minutes
+            headers: {
+                'Content-Type': 'application/json',
+            }
         });
 
-        return response.data || null;
+        if (!response.ok) {
+            if (response.status === 404) return null;
+            throw new Error(`Failed to fetch article: ${response.statusText}`);
+        }
+
+        return await response.json();
     } catch (error) {
         console.error(`Error fetching article ${slug}:`, error);
         return null;

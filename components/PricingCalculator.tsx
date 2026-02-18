@@ -205,7 +205,7 @@ export default function PricingCalculator() {
   };
 
   return (
-    <div className="relative my-0">
+    <div className="relative my-0" id="savings">
       <div className="container mx-auto px-4">
         <div className="relative py-12 lg:py-24 px-8 lg:px-14">
           {/* Side Gradients for the wrapper */}
@@ -235,7 +235,7 @@ export default function PricingCalculator() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-custom text-sm md:text-base xl:text-lg opacity-70 font-medium max-w-[600px] mx-auto mb-4"
+                className="text-custom-light text-sm md:text-base xl:text-xl font-normal max-w-[600px] mx-auto mb-4"
               >
                 <p className="mt-2 mb-10">
                   AI-powered hiring eliminates wasted hours, speeds up

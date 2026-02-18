@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Nunito_Sans, Lexend, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { defaultMetadata, generateOrganizationStructuredData } from "@/lib/seo";
 import ToastProvider from "@/components/ToastProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const nunito = Nunito_Sans({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+const lexend = Lexend({
+  subsets: ["latin"],
+  variable: "--font-lexend",
+  display: "swap",
+});
+
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://interviewscreener.com"),
@@ -19,25 +38,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-          rel="stylesheet"
-        />
-        
         {/* Organization Structured Data */}
         <script
           type="application/ld+json"
@@ -46,7 +46,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-nunito antialiased" suppressHydrationWarning>
+      <body
+        className={`${nunito.variable} ${lexend.variable} ${robotoMono.variable} font-nunito antialiased`}
+        suppressHydrationWarning
+      >
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

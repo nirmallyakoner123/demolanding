@@ -143,7 +143,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
     { label: truncateTitle(article.title || article.metadata.title), path: "" },
   ];
 
-  console.log("article", article);
+
 
   return (
     <>
@@ -307,4 +307,4 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
   );
 }
 
-export const revalidate = 300; // 5 minutes ISR caching
+export const revalidate = 3600; // 1 hour ISR caching

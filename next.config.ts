@@ -1,11 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable source maps for production build to resolve Lighthouse warnings
-  productionBrowserSourceMaps: true,
+  output: 'standalone',
 
   images: {
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'interviewscreener.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'app.next.interviewscreener.com',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'interview-screener.s3.us-east-2.amazonaws.com',

@@ -71,7 +71,7 @@ export default function HireSmarter() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-4 text-custom text-sm lg:text-base xl:text-xl opacity-70 font-medium max-w-[700px] mx-auto"
+              className="mt-2 text-custom-light text-sm lg:text-base xl:text-xl font-normal max-w-[700px] mx-auto"
             >
               <p>
                 Your hiring team should be making decisions, not drowning in

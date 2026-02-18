@@ -4,9 +4,8 @@ import { fetchArticles } from '@/lib/api/articles';
 import ArticlesClient from '@/components/ArticlesClient';
 import { generateSEOMetadata } from '@/lib/seo';
 
-// Disable caching to always fetch fresh data
-export const dynamic = 'force-dynamic';
-export const revalidate = 300; // 5 minutes ISR caching
+// ISR: Rebuild static HTML every 10 minutes in background
+export const revalidate = 600;
 
 /**
  * Articles Listing Page Metadata

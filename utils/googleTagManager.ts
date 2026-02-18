@@ -32,7 +32,7 @@ export const pushToDataLayer = (event: string, data: Record<string, any> = {}) =
         ...data
     });
 
-    console.log(`[GTM] Event pushed: ${event}`, data);
+    // console.log(`[GTM] Event pushed: ${event}`, data);
 };
 
 /**

@@ -121,7 +121,7 @@ export default function Banner() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-                className="text-custom text-sm md:text-base xl:text-lg opacity-70 font-medium max-w-[600px] mx-auto mb-4"
+                className="text-custom-light text-sm md:text-base xl:text-xl font-normal max-w-[600px] mx-auto mb-4"
               >
                 <p className="mt-5 mb-0">
                   Let AI handle resume filtering, interviews, and candidate
